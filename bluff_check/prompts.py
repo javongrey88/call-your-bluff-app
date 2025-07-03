@@ -1,4 +1,4 @@
-def valuation_prompt(resume, job_title, location, level):
+def valuation_prompt(resume, job_title, location, years_exp):
     return f"""
 Act as a professional resume and job market analyst.
 
@@ -9,7 +9,7 @@ Analyze the resume below and perform the following:
 3. List 3 strengths and 3 weaknesses in the resume.
 4. Explain how formatting, keyword usage, and clarity affect its performance in applicant tracking systems.
 
-Factors: Job Title: {job_title} | Location: {location} | Experience Level: {level}
+Factors: Job Title: {job_title} | Location: {location} | Years of Experience: {years_exp}
 
 Resume:
 \"\"\"

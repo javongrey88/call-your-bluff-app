@@ -18,14 +18,18 @@ with st.form("resume_form"):
     resume_text = st.text_area("Paste your resume text here:", height=300)
     job_title = st.text_input("Target Job Title")
     location = st.text_input("Location (City, State)")
-    level = st.selectbox("Experience Level", ["Junior", "Mid-level", "Senior", "Executive"])
-    submitted = st.form_submit_button("Analyze Resume")
+    years_exp = st.number_input("Years of Relevant Experience", min_value=0, max_value=50, step=1)
+
+    # Improved center alignment for the button (wider middle column)
+    col1, col2, col3 = st.columns([3, 2, 3])
+    with col2:
+        submitted = st.form_submit_button("Analyze Resume")
 
 # Run GPT analysis
 if submitted and resume_text and job_title and location:
     with st.spinner("Analyzing your resume..."):
 
-        prompt = valuation_prompt(resume_text, job_title, location, level)
+        prompt = valuation_prompt(resume_text, job_title, location, years_exp)
 
         try:
             response = openai.ChatCompletion.create(
@@ -42,3 +46,4 @@ if submitted and resume_text and job_title and location:
 else:
     if submitted:
         st.warning("Please fill in all fields.")
+
