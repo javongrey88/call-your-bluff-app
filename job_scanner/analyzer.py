@@ -1,9 +1,20 @@
-import openai
 import os
 from dotenv import load_dotenv
 
+# Load local .env file for development
 load_dotenv()
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# Handle both local and Streamlit Cloud environments
+try:
+    import streamlit as st
+    api_key = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    api_key = os.getenv("OPENAI_API_KEY")
+
+from openai import OpenAI
+
+# Initialize OpenAI client
+client = OpenAI(api_key=api_key)
 
 def analyze_job_description(job_text):
     prompt = f"""
@@ -28,7 +39,10 @@ Job Description:
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a blunt but helpful career advisor and corporate translator. Format in Markdown with emojis and short sections."},
+            {
+                "role": "system",
+                "content": "You are a blunt but helpful career advisor and corporate translator. Format in Markdown with emojis and short sections."
+            },
             {"role": "user", "content": prompt}
         ],
         temperature=0.4,
